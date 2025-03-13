@@ -15,9 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import upload_imagen_chunk, serve_imagen  
+from .views import upload_imagen_chunk
 
 urlpatterns = [
-    path('upload_chunk/', upload_imagen_chunk, name='upload_imagen_chunk'),
-    path('imagen/<int:imagen_id>/', serve_imagen, name='serve_imagen'),
+    path('upload/', upload_imagen_chunk, name='upload_imagen'),
 ]
