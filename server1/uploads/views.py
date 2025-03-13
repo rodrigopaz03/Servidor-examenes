@@ -32,3 +32,6 @@ def serve_imagen(request, imagen_id):
         return HttpResponse("Imagen no encontrada", status=404)
     
     return HttpResponse(imagen_obj.imagen_binaria, content_type=imagen_obj.content_type)
+
+def health_check(request):
+    return HttpResponse('ok')
