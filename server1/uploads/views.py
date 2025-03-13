@@ -59,3 +59,7 @@ def upload_imagen_chunk(request):
 
         return JsonResponse({'imagen_id': imagen_obj.id}, status=201)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+def health_check(request):
+    return HttpResponse("ok")
