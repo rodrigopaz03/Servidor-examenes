@@ -1,8 +1,3 @@
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Imagen
-
-# uploads/views.py
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Imagen
@@ -19,6 +14,7 @@ def upload_imagen(request):
                 titulo=archivo.name,
                 imagen_binaria=contenido,
                 content_type=archivo.content_type,
+                ensamblada=False  
             )
             return JsonResponse({'msg': 'Imagen almacenada en la base de datos', 'id': imagen_obj.id}, status=201)
         else:
