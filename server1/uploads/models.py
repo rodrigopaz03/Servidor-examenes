@@ -8,8 +8,3 @@ class Imagen(models.Model):
 
     def __str__(self):
         return self.titulo or f"Imagen {self.pk}"
-
-class ImagenChunk(models.Model):
-    imagen = models.ForeignKey(Imagen, on_delete=models.CASCADE, related_name='chunks')
-    chunk_index = models.IntegerField()
-    archivo_chunk = models.BinaryField()
