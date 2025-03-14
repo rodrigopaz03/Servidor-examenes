@@ -21,6 +21,7 @@ def upload_imagen(request):
             return JsonResponse({'error': 'No se recibió ningún archivo'}, status=400)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
+@csrf_exempt  
 def serve_imagen(request, imagen_id):
     try:
         imagen_obj = Imagen.objects.get(id=imagen_id)
@@ -29,5 +30,6 @@ def serve_imagen(request, imagen_id):
     
     return HttpResponse(imagen_obj.imagen_binaria, content_type=imagen_obj.content_type)
 
+@csrf_exempt  
 def health_check(request):
     return HttpResponse('ok')
