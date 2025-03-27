@@ -23,7 +23,6 @@ def upload_to_gcs(file_obj, filename, content_type):
     blob = bucket.blob(blob_name)
 
     blob.upload_from_file(file_obj, content_type=content_type)
-    blob.make_public()
 
     return blob.public_url
 
