@@ -12,9 +12,21 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from google.cloud import storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+ON_GCP = os.getenv('GAE_ENV', '').startswith('standard') or os.getenv('K_SERVICE') is not None
+
+if ON_GCP:
+    GCS_CLIENT = storage.Client()
+else:
+    GCS_CREDENTIALS_FILE = os.path.join(BASE_DIR, 'llave/gcs_key.json')
+    GCS_CLIENT = storage.Client.from_service_account_json(GCS_CREDENTIALS_FILE)
+
+GCS_BUCKET_NAME = 'django-medical-img-bucket'
 
 
 # Quick-start development settings - unsuitable for production
@@ -89,7 +101,7 @@ DATABASES = {
         'NAME': 'db-hospital',
         'USER': 'db-user',
         'PASSWORD': 'ISIS2503',
-        'HOST': '10.52.112.3',
+        'HOST': '10.65.176.3',
         'PORT': '5432',
 
     }
