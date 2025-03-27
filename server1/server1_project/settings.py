@@ -18,14 +18,9 @@ from google.cloud import storage
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-ON_GCP = os.getenv('GAE_ENV', '').startswith('standard') or os.getenv('K_SERVICE') is not None
 
-if ON_GCP:
-    GCS_CLIENT = storage.Client()
-else:
-    GCS_CREDENTIALS_FILE = os.path.join(BASE_DIR, 'llave/gcs_key.json')
-    GCS_CLIENT = storage.Client.from_service_account_json(GCS_CREDENTIALS_FILE)
 
+GCS_CLIENT = storage.Client()
 GCS_BUCKET_NAME = 'django-medical-img-bucket'
 
 
