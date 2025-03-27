@@ -6,6 +6,7 @@ from google.cloud import storage
 import uuid
 import os
 
+@csrf_exempt
 def upload_to_gcs(file_obj, filename, content_type):
     """
     Sube el archivo a GCS y retorna la URL pública
