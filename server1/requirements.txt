@@ -1,7 +1,7 @@
-Django>=3.2,<4.0
+Django==3.2.25
+djangorestframework==3.13.1
 gunicorn
 google-cloud-storage
 django-storages
-djangorestframework
 Pillow
 psycopg2-binary
