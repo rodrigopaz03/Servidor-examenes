@@ -11,11 +11,8 @@ def upload_to_gcs(file_obj, filename, content_type):
     """
     Sube el archivo a GCS y retorna la URL pública
     """
-    # Lógica inteligente: si estás local, usa JSON key; si no, usa default credentials (en GCP)
-    if hasattr(settings, 'GCS_CREDENTIALS_FILE'):
-        client = storage.Client.from_service_account_json(settings.GCS_CREDENTIALS_FILE)
-    else:
-        client = storage.Client()
+   
+    client = storage.Client()
 
     bucket = client.bucket(settings.GCS_BUCKET_NAME)
 
