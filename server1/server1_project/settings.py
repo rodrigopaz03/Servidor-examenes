@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'db-hospital',
         'USER': 'db-user',
         'PASSWORD': 'ISIS2503',
-        'HOST': '10.65.176.10',
+        'HOST': '10.65.176.3',
         'PORT': '5432',
 
     }
