@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponseNotFound, JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import uuid
@@ -52,6 +52,23 @@ def imagenes_por_paciente(request, paciente_id):
             "uploaded_at": d["uploaded_at"],
         })
     return JsonResponse(resultados, safe=False)
+
+@csrf_exempt
+def serve_imagen(request, imagen_id):
+    """
+    Busca en Firestore el documento con ID = imagen_id
+    y devuelve su URL pública en JSON.
+    """
+    doc_ref = db.collection('imagenes').document(imagen_id)
+    doc = doc_ref.get()
+    if not doc.exists:
+        return HttpResponseNotFound("Imagen no encontrada")
+
+    data = doc.to_dict()
+    # Asumo que guardas la URL pública en el campo 'url'
+    return JsonResponse({'url': data.get('url')})
+
+
 @csrf_exempt
 def health_check(request):
     return HttpResponse('ok')
