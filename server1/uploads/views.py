@@ -11,7 +11,7 @@ import requests
 from django.http     import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf    import settings
-from .firestore_client import db
+from .firestone_client import db
 
 @csrf_exempt
 def upload_imagen(request):
