@@ -18,10 +18,9 @@ from google.cloud import storage
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+SERVER2_URL = 'http://34.69.130.44:8080/registro/'
+GOOGLE_CLOUD_PROJECT = "exalted-booster-454620-j9"
 
-
-GCS_CLIENT = storage.Client()
-GCS_BUCKET_NAME = 'django-medical-img-bucket'
 
 
 # Quick-start development settings - unsuitable for production
@@ -90,15 +89,12 @@ WSGI_APPLICATION = 'server1_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db-hospital',
-        'USER': 'db-user',
-        'PASSWORD': 'ISIS2503',
-        'HOST': '10.65.176.3',
-        'PORT': '5432',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  
     }
 }
 
