@@ -1,7 +1,6 @@
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from google.cloud import storage
 import uuid
 import os
 
