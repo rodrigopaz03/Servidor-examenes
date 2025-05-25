@@ -8,6 +8,9 @@ from django.http import (
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from google.cloud import firestore
+import base64
+from io import BytesIO
+from PIL import Image
 
 db = firestore.Client(
     project="exalted-booster-454620-j9",
@@ -117,6 +120,35 @@ def imagenes_por_paciente(request, paciente_id):
     res = JsonResponse(resultados, safe=False)
     res["Access-Control-Allow-Origin"] = "*"
     return res
+
+def download_image(doc_id):
+    """
+    Lee todos los chunks de la imagen con ID = doc_id, los concatena,
+    los decodifica de Base64 y devuelve un objeto BytesIO listo
+    para, por ejemplo, enviar en una respuesta HTTP o abrir con PIL.
+    """
+    doc_ref = db.collection('imagenes').document(doc_id)
+    doc = doc_ref.get()
+    if not doc.exists:
+        raise ValueError(f"Imagen {doc_id} no encontrada")
+
+    meta = doc.to_dict()
+    chunks_count = meta.get('chunks_count', 0)
+    if chunks_count == 0:
+        raise ValueError(f"Ningún chunk registrado para la imagen {doc_id}")
+
+    partes = []
+    for idx in range(chunks_count):
+        chunk_ref = doc_ref.collection('chunks').document(f"{idx:04d}")
+        chunk_doc = chunk_ref.get()
+        if not chunk_doc.exists:
+            raise ValueError(f"Falta el chunk {idx:04d} para la imagen {doc_id}")
+        partes.append(chunk_doc.to_dict()['data'])
+
+    todo_b64 = ''.join(partes)
+    imagen_bytes = base64.b64decode(todo_b64)
+
+    return BytesIO(imagen_bytes)
 
 
 @csrf_exempt
