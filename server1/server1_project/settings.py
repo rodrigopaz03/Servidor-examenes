@@ -17,7 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SERVER2_URL = 'http://34.172.1.19:8080/registro/'
+SERVER2_URL = 'http://130.211.118.196/registro/'
 GOOGLE_CLOUD_PROJECT = "exalted-booster-454620-j9"
 
 
