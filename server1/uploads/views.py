@@ -1,6 +1,6 @@
 import json
 import datetime
-
+import base64
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -134,16 +134,29 @@ def health_check(request):
     res["Access-Control-Allow-Origin"] = "*"
     return res
 
+
 @csrf_exempt
 @require_http_methods(["GET"])
-def serve_imagen(request, imagen_id):
-    doc = db.collection("imagenes").document(imagen_id).get()
+def download_imagen(request, imagen_id):
+    # 1) leo metadata y chunks_count de Firestore
+    doc_ref = db.collection("imagenes").document(imagen_id)
+    doc = doc_ref.get()
     if not doc.exists:
         return HttpResponseNotFound("Imagen no encontrada")
-    url = doc.to_dict().get("url")
-    if not url:
-        return HttpResponseNotFound("URL no encontrada")
-    res = JsonResponse({"url": url})
-    # aquí la cabecera CORS
-    res["Access-Control-Allow-Origin"] = "*"
-    return res
+    meta = doc.to_dict()
+    count = int(meta["chunks_count"])
+    content_type = meta["content_type"]
+    filename = meta["filename"]
+
+    # 2) concateno chunks base64
+    partes = []
+    for i in range(count):
+        c = doc_ref.collection("chunks").document(f"{i:04d}").get()
+        partes.append(c.to_dict()["data"])
+    data = base64.b64decode("".join(partes))
+
+    # 3) devuelvo el binario con CORS permitido
+    resp = HttpResponse(data, content_type=content_type)
+    resp["Access-Control-Allow-Origin"] = "*"
+    resp["Content-Disposition"] = f'inline; filename="{filename}"'
+    return resp
