@@ -5,3 +5,4 @@ google-cloud-storage
 django-storages
 Pillow
 psycopg2-binary
+google-cloud-firestore
