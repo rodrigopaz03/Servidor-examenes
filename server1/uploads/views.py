@@ -133,3 +133,17 @@ def health_check(request):
     res = HttpResponse("ok")
     res["Access-Control-Allow-Origin"] = "*"
     return res
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def serve_imagen(request, imagen_id):
+    doc = db.collection("imagenes").document(imagen_id).get()
+    if not doc.exists:
+        return HttpResponseNotFound("Imagen no encontrada")
+    url = doc.to_dict().get("url")
+    if not url:
+        return HttpResponseNotFound("URL no encontrada")
+    res = JsonResponse({"url": url})
+    # aquí la cabecera CORS
+    res["Access-Control-Allow-Origin"] = "*"
+    return res

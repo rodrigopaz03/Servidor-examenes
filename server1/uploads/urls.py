@@ -24,4 +24,8 @@ urlpatterns = [
     path('pacientes/<str:paciente_id>/imagenes/', views.imagenes_por_paciente, name='imagenes_por_paciente'),
     path('imagenes/<str:imagen_id>/', views.serve_imagen, name='serve_imagen'),
     path('health/', views.health_check, name='health_check'),
+    path('imagenes/<str:imagen_id>/download/',
+     views.download_imagen,
+     name='download_imagen'),
+
 ]
